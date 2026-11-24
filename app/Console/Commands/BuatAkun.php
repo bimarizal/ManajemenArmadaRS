@@ -15,7 +15,7 @@ class BuatAkun extends Command
     protected $signature = 'fleet:buat-akun
                             {--nama= : Nama lengkap}
                             {--email= : Alamat email}
-                            {--role=ketua_garasi : driver | admin_garasi | ketua_garasi}';
+                            {--role=kasubag_rumahtangga : driver | penanggungjawab_garasi | kasubag_rumahtangga}';
 
     protected $description = 'Membuat akun pengguna (untuk akun pertama di production tanpa seeder demo)';
 
@@ -23,8 +23,8 @@ class BuatAkun extends Command
     {
         $role = $this->option('role');
 
-        if (! in_array($role, [User::ROLE_DRIVER, User::ROLE_ADMIN_GARASI, User::ROLE_KETUA_GARASI], true)) {
-            $this->error('Role tidak valid. Pilih: driver, admin_garasi, atau ketua_garasi.');
+        if (! in_array($role, [User::ROLE_DRIVER, User::ROLE_PENANGGUNGJAWAB_GARASI, User::ROLE_KASUBAG_RUMAHTANGGA], true)) {
+            $this->error('Role tidak valid. Pilih: driver, penanggungjawab_garasi, atau kasubag_rumahtangga.');
 
             return self::FAILURE;
         }

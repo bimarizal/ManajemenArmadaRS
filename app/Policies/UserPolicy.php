@@ -5,15 +5,15 @@ namespace App\Policies;
 use App\Models\User;
 
 /**
- * Ketua Garasi : mengelola semua akun.
- * Admin Garasi : hanya mengelola akun Driver.
+ * Kasubag Rumah Tangga : mengelola semua akun.
+ * Penanggung Jawab Garasi : hanya mengelola akun Driver.
  * Driver       : tidak punya akses.
  */
 class UserPolicy
 {
     public function viewAny(User $actor): bool
     {
-        return $actor->isAdminGarasi() || $actor->isKetuaGarasi();
+        return $actor->isPenanggungjawabGarasi() || $actor->isKasubagRumahtangga();
     }
 
     public function view(User $actor, User $target): bool
@@ -46,10 +46,10 @@ class UserPolicy
 
     private function kelola(User $actor, User $target): bool
     {
-        if ($actor->isKetuaGarasi()) {
+        if ($actor->isKasubagRumahtangga()) {
             return true;
         }
 
-        return $actor->isAdminGarasi() && $target->isDriver();
+        return $actor->isPenanggungjawabGarasi() && $target->isDriver();
     }
 }

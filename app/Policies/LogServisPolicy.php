@@ -9,7 +9,7 @@ class LogServisPolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->isAdminGarasi() || $user->isKetuaGarasi();
+        return $user->isPenanggungjawabGarasi() || $user->isKasubagRumahtangga();
     }
 
     public function view(User $user, LogServis $servis): bool
@@ -19,32 +19,32 @@ class LogServisPolicy
 
     public function create(User $user): bool
     {
-        return $user->isAdminGarasi();
+        return $user->isPenanggungjawabGarasi();
     }
 
     public function update(User $user, LogServis $servis): bool
     {
-        return $user->isAdminGarasi();
+        return $user->isPenanggungjawabGarasi();
     }
 
     public function delete(User $user, LogServis $servis): bool
     {
-        return $user->isAdminGarasi();
+        return $user->isPenanggungjawabGarasi();
     }
 
     public function deleteAny(User $user): bool
     {
-        return $user->isAdminGarasi();
+        return $user->isPenanggungjawabGarasi();
     }
 
     public function restore(User $user, LogServis $servis): bool
     {
-        return $user->isAdminGarasi();
+        return $user->isPenanggungjawabGarasi();
     }
 
     public function restoreAny(User $user): bool
     {
-        return $user->isAdminGarasi();
+        return $user->isPenanggungjawabGarasi();
     }
 
     // Hapus permanen sengaja tidak diizinkan untuk siapa pun (data biaya harus tetap utuh).

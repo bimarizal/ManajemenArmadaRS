@@ -49,9 +49,9 @@ class HakAksesTest extends TestCase
         $this->assertFalse($driver->can('delete', $log));
     }
 
-    public function test_admin_garasi_memiliki_crud_penuh_pada_data_operasional(): void
+    public function test_penanggungjawab_garasi_memiliki_crud_penuh_pada_data_operasional(): void
     {
-        $admin = $this->buatUser(User::ROLE_ADMIN_GARASI);
+        $admin = $this->buatUser(User::ROLE_PENANGGUNGJAWAB_GARASI);
         $armada = $this->buatArmada();
         $log = $this->buatLogBbm($armada, $this->buatUser());
         $servis = $this->buatLogServis($armada);
@@ -66,9 +66,9 @@ class HakAksesTest extends TestCase
         }
     }
 
-    public function test_ketua_garasi_hanya_membaca_data_operasional(): void
+    public function test_kasubag_rumahtangga_hanya_membaca_data_operasional(): void
     {
-        $ketua = $this->buatUser(User::ROLE_KETUA_GARASI);
+        $ketua = $this->buatUser(User::ROLE_KASUBAG_RUMAHTANGGA);
         $armada = $this->buatArmada();
         $log = $this->buatLogBbm($armada, $this->buatUser());
         $servis = $this->buatLogServis($armada);
@@ -81,20 +81,20 @@ class HakAksesTest extends TestCase
         }
     }
 
-    public function test_admin_garasi_hanya_mengelola_akun_driver(): void
+    public function test_penanggungjawab_garasi_hanya_mengelola_akun_driver(): void
     {
-        $admin = $this->buatUser(User::ROLE_ADMIN_GARASI);
+        $admin = $this->buatUser(User::ROLE_PENANGGUNGJAWAB_GARASI);
 
         $this->assertTrue($admin->can('create', User::class));
         $this->assertTrue($admin->can('update', $this->buatUser(User::ROLE_DRIVER)));
-        $this->assertFalse($admin->can('update', $this->buatUser(User::ROLE_KETUA_GARASI)));
-        $this->assertFalse($admin->can('update', $this->buatUser(User::ROLE_ADMIN_GARASI)));
+        $this->assertFalse($admin->can('update', $this->buatUser(User::ROLE_KASUBAG_RUMAHTANGGA)));
+        $this->assertFalse($admin->can('update', $this->buatUser(User::ROLE_PENANGGUNGJAWAB_GARASI)));
     }
 
-    public function test_ketua_mengelola_semua_akun_namun_tidak_menghapus_diri_sendiri(): void
+    public function test_kasubag_mengelola_semua_akun_namun_tidak_menghapus_diri_sendiri(): void
     {
-        $ketua = $this->buatUser(User::ROLE_KETUA_GARASI);
-        $admin = $this->buatUser(User::ROLE_ADMIN_GARASI);
+        $ketua = $this->buatUser(User::ROLE_KASUBAG_RUMAHTANGGA);
+        $admin = $this->buatUser(User::ROLE_PENANGGUNGJAWAB_GARASI);
         $driverBaru = $this->buatUser();
 
         $this->assertTrue($ketua->can('update', $admin));
@@ -104,7 +104,7 @@ class HakAksesTest extends TestCase
 
     public function test_akun_dengan_riwayat_bbm_tidak_dapat_dihapus(): void
     {
-        $ketua = $this->buatUser(User::ROLE_KETUA_GARASI);
+        $ketua = $this->buatUser(User::ROLE_KASUBAG_RUMAHTANGGA);
         $driver = $this->buatUser();
         $this->buatLogBbm($this->buatArmada(), $driver);
 
@@ -113,7 +113,7 @@ class HakAksesTest extends TestCase
 
     public function test_akun_dengan_log_bbm_yang_sudah_di_soft_delete_tetap_tidak_dapat_dihapus(): void
     {
-        $ketua = $this->buatUser(User::ROLE_KETUA_GARASI);
+        $ketua = $this->buatUser(User::ROLE_KASUBAG_RUMAHTANGGA);
         $driver = $this->buatUser();
         $log = $this->buatLogBbm($this->buatArmada(), $driver);
 
@@ -126,8 +126,8 @@ class HakAksesTest extends TestCase
     {
         $panel = Filament::getPanel('admin');
 
-        $aktif = $this->buatUser(User::ROLE_ADMIN_GARASI);
-        $nonaktif = $this->buatUser(User::ROLE_ADMIN_GARASI, ['is_active' => false]);
+        $aktif = $this->buatUser(User::ROLE_PENANGGUNGJAWAB_GARASI);
+        $nonaktif = $this->buatUser(User::ROLE_PENANGGUNGJAWAB_GARASI, ['is_active' => false]);
 
         $this->assertTrue($aktif->canAccessPanel($panel));
         $this->assertFalse($nonaktif->canAccessPanel($panel));

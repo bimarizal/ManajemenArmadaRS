@@ -51,8 +51,8 @@ Pastikan `bootstrap/providers.php` memuat `App\Providers\Filament\AdminPanelProv
 
 | Role | Email |
 |---|---|
-| Ketua Garasi | ketua@simfleet.test |
-| Admin Garasi | admin@simfleet.test |
+| Kasubag Rumah Tangga | ketua@simfleet.test |
+| Penanggung Jawab Garasi | admin@simfleet.test |
 | Driver | driver1@simfleet.test, driver2@simfleet.test |
 
 Login di `/admin`.
@@ -66,11 +66,11 @@ berubah di Laravel 12 / Carbon 3 (mis. `diffInDays`) maupun trait `HasUuids`.
 ## Fitur tambahan (rilis ini)
 
 - **Manajemen Pengguna** (menu Master Data → Pengguna): tambah/ubah akun, atur role, nonaktifkan akun,
-  ganti password. Ketua Garasi mengelola semua akun; Admin Garasi hanya akun Driver.
+  ganti password. Kasubag Rumah Tangga mengelola semua akun; Penanggung Jawab Garasi hanya akun Driver.
   Akun sendiri tidak bisa dinonaktifkan/diubah role-nya; akun yang punya riwayat BBM tidak bisa dihapus (nonaktifkan saja).
 - **Ganti password sendiri:** menu profil di pojok kanan atas.
 - **Soft delete:** Armada, Log BBM, dan Log Servis yang dihapus tidak hilang permanen.
-  Admin Garasi bisa melihatnya lewat filter "Data terhapus" dan memulihkannya. Hapus permanen tidak diizinkan.
+  Penanggung Jawab Garasi bisa melihatnya lewat filter "Data terhapus" dan memulihkannya. Hapus permanen tidak diizinkan.
   Plat nomor armada yang dihapus tetap tampil pada riwayatnya, dan plat nomornya tetap "terpakai" (unik) sampai dipulihkan.
 - **Tes otomatis** (di folder `tests/`): perhitungan BBM, aturan approval, traffic light dokumen, hak akses per role, soft delete,
   dan beberapa uji halaman Filament.
@@ -93,7 +93,7 @@ php artisan test
 ```
 
 Isi fase 1:
-- **Jejak audit** (menu Sistem → Jejak Audit, khusus Ketua): siapa membuat/mengubah/menghapus/memulihkan data,
+- **Jejak audit** (menu Sistem → Jejak Audit, khusus Kasubag Rumah Tangga): siapa membuat/mengubah/menghapus/memulihkan data,
   nilai sebelum & sesudah, serta login berhasil/gagal. Password tidak pernah dicatat.
 - **Foto privat:** nota, kwitansi, dan foto laporan disimpan di `storage/app/private` dan dibuka lewat URL sementara bertanda tangan
   (`APP_URL` harus sama dengan alamat yang dibuka di browser).
@@ -115,6 +115,6 @@ php artisan test
 
 - Role memakai kolom `users.role` + Laravel Policies (tanpa Spatie), sesuai skema pada spesifikasi.
 - Tabel tambahan `laporan_masalahs` untuk fitur "Laporkan Kendaraan Bermasalah" milik Driver.
-- Servis dengan biaya <= Rp 1.000.000 tetap berstatus `Pending` (default skema) sampai Ketua memutuskan;
+- Servis dengan biaya <= Rp 1.000.000 tetap berstatus `Pending` (default skema) sampai Kasubag Rumah Tangga memutuskan;
   biaya > Rp 1.000.000 dipaksa `Pending` oleh model event.
-- Ekspor Excel/PDF (BBM + servis Approved) ada di halaman Log Servis, khusus Ketua Garasi.
+- Ekspor Excel/PDF (BBM + servis Approved) ada di halaman Log Servis, khusus Kasubag Rumah Tangga.

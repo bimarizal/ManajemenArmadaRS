@@ -46,8 +46,8 @@ Windows: buat tugas di Task Scheduler yang menjalankan `php artisan schedule:run
 ## Akun pertama (tanpa seeder demo)
 Seeder menolak berjalan di production. Buat akun lewat:
 ```bash
-php artisan fleet:buat-akun --role=ketua_garasi
-php artisan fleet:buat-akun --role=admin_garasi
+php artisan fleet:buat-akun --role=kasubag_rumahtangga
+php artisan fleet:buat-akun --role=penanggungjawab_garasi
 ```
 Akun lain dibuat dari menu **Pengguna** di aplikasi.
 

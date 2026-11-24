@@ -40,23 +40,23 @@ class UserResource extends Resource
 
     public const LABEL_ROLE = [
         User::ROLE_DRIVER => 'Driver (Sopir)',
-        User::ROLE_ADMIN_GARASI => 'Admin Garasi',
-        User::ROLE_KETUA_GARASI => 'Ketua Garasi',
+        User::ROLE_PENANGGUNGJAWAB_GARASI => 'Penanggung Jawab Garasi',
+        User::ROLE_KASUBAG_RUMAHTANGGA => 'Kasubag Rumah Tangga',
     ];
 
-    /** Admin Garasi hanya melihat dan mengelola akun Driver. */
+    /** Penanggung Jawab Garasi hanya melihat dan mengelola akun Driver. */
     public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery();
 
-        return auth()->user()?->isAdminGarasi()
+        return auth()->user()?->isPenanggungjawabGarasi()
             ? $query->where('role', User::ROLE_DRIVER)
             : $query;
     }
 
     protected static function opsiRole(): array
     {
-        return auth()->user()?->isKetuaGarasi()
+        return auth()->user()?->isKasubagRumahtangga()
             ? self::LABEL_ROLE
             : [User::ROLE_DRIVER => self::LABEL_ROLE[User::ROLE_DRIVER]];
     }
@@ -110,8 +110,8 @@ class UserResource extends Resource
                 TextColumn::make('role')->label('Role')->badge()
                     ->formatStateUsing(fn (string $state) => self::LABEL_ROLE[$state] ?? $state)
                     ->color(fn (string $state) => match ($state) {
-                        User::ROLE_KETUA_GARASI => 'primary',
-                        User::ROLE_ADMIN_GARASI => 'info',
+                        User::ROLE_KASUBAG_RUMAHTANGGA => 'primary',
+                        User::ROLE_PENANGGUNGJAWAB_GARASI => 'info',
                         default => 'gray',
                     }),
                 IconColumn::make('is_active')->label('Aktif')->boolean(),
@@ -120,7 +120,7 @@ class UserResource extends Resource
             ])
             ->filters([
                 SelectFilter::make('role')->options(self::LABEL_ROLE)
-                    ->visible(fn () => auth()->user()?->isKetuaGarasi()),
+                    ->visible(fn () => auth()->user()?->isKasubagRumahtangga()),
                 TernaryFilter::make('is_active')->label('Status akun')
                     ->trueLabel('Aktif')->falseLabel('Nonaktif'),
             ])

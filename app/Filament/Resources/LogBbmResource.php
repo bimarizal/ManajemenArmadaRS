@@ -50,8 +50,8 @@ class LogBbmResource extends Resource
         $query = parent::getEloquentQuery()->with(['armada', 'driver']);
         $user = auth()->user();
 
-        // Hanya Admin Garasi yang dapat melihat/memulihkan data terhapus.
-        if ($user?->isAdminGarasi()) {
+        // Hanya Penanggung Jawab Garasi yang dapat melihat/memulihkan data terhapus.
+        if ($user?->isPenanggungjawabGarasi()) {
             $query->withoutGlobalScopes([SoftDeletingScope::class]);
         }
 
@@ -140,7 +140,7 @@ class LogBbmResource extends Resource
                         ->required()
                         ->columnSpanFull(),
 
-                    // Driver: otomatis dirinya sendiri. Admin: bisa memilih driver.
+                    // Driver: otomatis dirinya sendiri. Penanggung jawab garasi: bisa memilih driver.
                     Hidden::make('driver_id')
                         ->default(fn () => auth()->id())
                         ->visible(fn () => auth()->user()?->isDriver()),
@@ -189,7 +189,7 @@ class LogBbmResource extends Resource
                     ->query(fn (Builder $query): Builder => $query->where('is_flagged_boros', true)),
                 SelectFilter::make('armada_id')->label('Armada')
                     ->relationship('armada', 'plat_nomor')->searchable()->preload(),
-                TrashedFilter::make()->label('Data terhapus')->visible(fn () => auth()->user()?->isAdminGarasi()),
+                TrashedFilter::make()->label('Data terhapus')->visible(fn () => auth()->user()?->isPenanggungjawabGarasi()),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

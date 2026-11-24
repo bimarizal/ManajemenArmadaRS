@@ -15,37 +15,37 @@ class LogBbmPolicy
 
     public function view(User $user, LogBbm $log): bool
     {
-        return $user->isAdminGarasi() || $user->isKetuaGarasi() || $log->driver_id === $user->id;
+        return $user->isPenanggungjawabGarasi() || $user->isKasubagRumahtangga() || $log->driver_id === $user->id;
     }
 
     public function create(User $user): bool
     {
-        return $user->isDriver() || $user->isAdminGarasi();
+        return $user->isDriver() || $user->isPenanggungjawabGarasi();
     }
 
     public function update(User $user, LogBbm $log): bool
     {
-        return $user->isAdminGarasi();
+        return $user->isPenanggungjawabGarasi();
     }
 
     public function delete(User $user, LogBbm $log): bool
     {
-        return $user->isAdminGarasi();
+        return $user->isPenanggungjawabGarasi();
     }
 
     public function deleteAny(User $user): bool
     {
-        return $user->isAdminGarasi();
+        return $user->isPenanggungjawabGarasi();
     }
 
     public function restore(User $user, LogBbm $log): bool
     {
-        return $user->isAdminGarasi();
+        return $user->isPenanggungjawabGarasi();
     }
 
     public function restoreAny(User $user): bool
     {
-        return $user->isAdminGarasi();
+        return $user->isPenanggungjawabGarasi();
     }
 
     // Hapus permanen sengaja tidak diizinkan untuk siapa pun (data biaya harus tetap utuh).

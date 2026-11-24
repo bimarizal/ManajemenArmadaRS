@@ -21,7 +21,7 @@ class ExpiringDocumentsTable extends TableWidget
     {
         $user = auth()->user();
 
-        return $user && ($user->isKetuaGarasi() || $user->isAdminGarasi());
+        return $user && ($user->isKasubagRumahtangga() || $user->isPenanggungjawabGarasi());
     }
 
     public function table(Table $table): Table
@@ -46,7 +46,7 @@ class ExpiringDocumentsTable extends TableWidget
                     ->label('Buka')
                     ->icon('heroicon-o-arrow-top-right-on-square')
                     ->url(fn (Armada $record) => ArmadaResource::getUrl(
-                        auth()->user()->isAdminGarasi() ? 'edit' : 'view',
+                        auth()->user()->isPenanggungjawabGarasi() ? 'edit' : 'view',
                         ['record' => $record],
                     )),
             ]);

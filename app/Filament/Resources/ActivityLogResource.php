@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Models\Activity;
 
-/** Jejak audit (hanya baca). Hanya Ketua Garasi yang dapat membuka. */
+/** Jejak audit (hanya baca). Hanya Kasubag Rumah Tangga yang dapat membuka. */
 class ActivityLogResource extends Resource
 {
     protected static ?string $model = Activity::class;
@@ -57,7 +57,7 @@ class ActivityLogResource extends Resource
 
     public static function canViewAny(): bool
     {
-        return auth()->user()?->isKetuaGarasi() ?? false;
+        return auth()->user()?->isKasubagRumahtangga() ?? false;
     }
 
     public static function canView(Model $record): bool

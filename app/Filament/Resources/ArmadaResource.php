@@ -36,12 +36,12 @@ class ArmadaResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
-    /** Hanya Admin Garasi yang dapat melihat (dan memulihkan) data yang sudah dihapus. */
+    /** Hanya Penanggung Jawab Garasi yang dapat melihat (dan memulihkan) data yang sudah dihapus. */
     public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery();
 
-        return auth()->user()?->isAdminGarasi()
+        return auth()->user()?->isPenanggungjawabGarasi()
             ? $query->withoutGlobalScopes([SoftDeletingScope::class])
             : $query;
     }
@@ -148,7 +148,7 @@ class ArmadaResource extends Resource
                     ->label('Dokumen perlu perpanjangan (≤ 14 hari / kedaluwarsa)')
                     ->toggle()
                     ->query(fn (Builder $query): Builder => $query->dokumenMendekatiJatuhTempo()),
-                TrashedFilter::make()->label('Data terhapus')->visible(fn () => auth()->user()?->isAdminGarasi()),
+                TrashedFilter::make()->label('Data terhapus')->visible(fn () => auth()->user()?->isPenanggungjawabGarasi()),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

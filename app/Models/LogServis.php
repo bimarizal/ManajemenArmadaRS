@@ -12,7 +12,7 @@ class LogServis extends Model
 {
     use SoftDeletes, LogsActivity;
 
-    /** Biaya di atas angka ini wajib melalui persetujuan Ketua Garasi. */
+    /** Biaya di atas angka ini wajib melalui persetujuan Kasubag Rumah Tangga. */
     public const BATAS_APPROVAL = 1_000_000;
 
     protected $table = 'log_servises';

@@ -31,12 +31,12 @@ class ListLogServises extends ListRecords
         return [
             Actions\CreateAction::make()->label('Catat Servis'),
 
-            // Ekspor laporan biaya operasional (BBM + servis Approved) — khusus Ketua Garasi.
+            // Ekspor laporan biaya operasional (BBM + servis Approved) — khusus Kasubag Rumah Tangga.
             Actions\Action::make('exportExcel')
                 ->label('Ekspor Excel')
                 ->icon('heroicon-o-table-cells')
                 ->color('success')
-                ->visible(fn () => auth()->user()?->isKetuaGarasi())
+                ->visible(fn () => auth()->user()?->isKasubagRumahtangga())
                 ->modalHeading('Ekspor Laporan Biaya Operasional (Excel)')
                 ->form($this->rentangForm())
                 ->action(function (array $data) {
@@ -53,7 +53,7 @@ class ListLogServises extends ListRecords
                 ->label('Ekspor PDF')
                 ->icon('heroicon-o-document-arrow-down')
                 ->color('danger')
-                ->visible(fn () => auth()->user()?->isKetuaGarasi())
+                ->visible(fn () => auth()->user()?->isKasubagRumahtangga())
                 ->modalHeading('Ekspor Laporan Biaya Operasional (PDF)')
                 ->form($this->rentangForm())
                 ->action(function (array $data) {

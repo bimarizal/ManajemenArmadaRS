@@ -13,7 +13,7 @@ class EditUser extends EditRecord
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
-        if (auth()->user()->isAdminGarasi()) {
+        if (auth()->user()->isPenanggungjawabGarasi()) {
             $data['role'] = User::ROLE_DRIVER;
         }
 

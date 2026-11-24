@@ -12,8 +12,8 @@ class CreateUser extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        // Pengaman sisi server: Admin Garasi hanya boleh membuat akun Driver.
-        if (auth()->user()->isAdminGarasi()) {
+        // Pengaman sisi server: Penanggung Jawab Garasi hanya boleh membuat akun Driver.
+        if (auth()->user()->isPenanggungjawabGarasi()) {
             $data['role'] = User::ROLE_DRIVER;
         }
 

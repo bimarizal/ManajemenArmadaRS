@@ -34,7 +34,7 @@ class KeamananTest extends TestCase
 
     public function test_password_lemah_ditolak_saat_membuat_pengguna(): void
     {
-        $this->actingAs($this->buatUser(User::ROLE_KETUA_GARASI));
+        $this->actingAs($this->buatUser(User::ROLE_KASUBAG_RUMAHTANGGA));
 
         Livewire::test(CreateUser::class)
             ->fillForm([
@@ -52,7 +52,7 @@ class KeamananTest extends TestCase
 
     public function test_password_kuat_diterima_saat_membuat_pengguna(): void
     {
-        $this->actingAs($this->buatUser(User::ROLE_KETUA_GARASI));
+        $this->actingAs($this->buatUser(User::ROLE_KASUBAG_RUMAHTANGGA));
 
         Livewire::test(CreateUser::class)
             ->fillForm([
@@ -71,14 +71,14 @@ class KeamananTest extends TestCase
     public function test_perintah_buat_akun_membuat_pengguna_dengan_role_yang_dipilih(): void
     {
         $this->artisan('fleet:buat-akun', [
-            '--nama' => 'Ketua Uji',
+            '--nama' => 'Kasubag Uji',
             '--email' => 'ketua-uji@test.local',
-            '--role' => 'ketua_garasi',
+            '--role' => 'kasubag_rumahtangga',
         ])
             ->expectsQuestion('Password', 'Rahasia123')
             ->assertSuccessful();
 
-        $this->assertDatabaseHas('users', ['email' => 'ketua-uji@test.local', 'role' => User::ROLE_KETUA_GARASI]);
+        $this->assertDatabaseHas('users', ['email' => 'ketua-uji@test.local', 'role' => User::ROLE_KASUBAG_RUMAHTANGGA]);
     }
 
     public function test_perintah_buat_akun_menolak_role_tidak_valid(): void

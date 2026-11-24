@@ -21,7 +21,7 @@ class FuelEfficiencyChartWidget extends ChartWidget
     {
         $user = auth()->user();
 
-        return $user && ($user->isKetuaGarasi() || $user->isAdminGarasi());
+        return $user && ($user->isKasubagRumahtangga() || $user->isPenanggungjawabGarasi());
     }
 
     protected function getFilters(): ?array

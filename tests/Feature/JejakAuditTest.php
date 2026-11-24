@@ -25,7 +25,7 @@ class JejakAuditTest extends TestCase
 
     public function test_pembuatan_armada_tercatat_beserta_pelakunya(): void
     {
-        $admin = $this->buatUser(User::ROLE_ADMIN_GARASI);
+        $admin = $this->buatUser(User::ROLE_PENANGGUNGJAWAB_GARASI);
         $this->actingAs($admin);
 
         $armada = $this->buatArmada();
@@ -40,7 +40,7 @@ class JejakAuditTest extends TestCase
 
     public function test_keputusan_approval_tercatat_dengan_nilai_sebelum_dan_sesudah(): void
     {
-        $ketua = $this->buatUser(User::ROLE_KETUA_GARASI);
+        $ketua = $this->buatUser(User::ROLE_KASUBAG_RUMAHTANGGA);
         $servis = $this->buatLogServis($this->buatArmada(), ['biaya' => 2000000]);
 
         $this->actingAs($ketua);
@@ -87,7 +87,7 @@ class JejakAuditTest extends TestCase
 
     public function test_login_berhasil_tercatat(): void
     {
-        $user = $this->buatUser(User::ROLE_ADMIN_GARASI);
+        $user = $this->buatUser(User::ROLE_PENANGGUNGJAWAB_GARASI);
 
         event(new Login('web', $user, false));
 
@@ -100,16 +100,16 @@ class JejakAuditTest extends TestCase
 
     // Satu pengguna per tes: AuthenticateSession menyimpan hash password di sesi,
     // sehingga berganti pengguna di tengah tes membuat sesi dianggap tidak valid (302).
-    public function test_ketua_boleh_membuka_jejak_audit(): void
+    public function test_kasubag_boleh_membuka_jejak_audit(): void
     {
-        $this->actingAs($this->buatUser(User::ROLE_KETUA_GARASI));
+        $this->actingAs($this->buatUser(User::ROLE_KASUBAG_RUMAHTANGGA));
 
         $this->get(ActivityLogResource::getUrl('index'))->assertOk();
     }
 
-    public function test_admin_garasi_ditolak_membuka_jejak_audit(): void
+    public function test_penanggungjawab_garasi_ditolak_membuka_jejak_audit(): void
     {
-        $this->actingAs($this->buatUser(User::ROLE_ADMIN_GARASI));
+        $this->actingAs($this->buatUser(User::ROLE_PENANGGUNGJAWAB_GARASI));
 
         $this->get(ActivityLogResource::getUrl('index'))->assertForbidden();
     }

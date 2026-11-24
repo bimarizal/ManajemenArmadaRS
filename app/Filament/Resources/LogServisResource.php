@@ -44,7 +44,7 @@ class LogServisResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        if (! auth()->user()?->isKetuaGarasi()) {
+        if (! auth()->user()?->isKasubagRumahtangga()) {
             return null;
         }
 
@@ -62,7 +62,7 @@ class LogServisResource extends Resource
     {
         $query = parent::getEloquentQuery();
 
-        return auth()->user()?->isAdminGarasi()
+        return auth()->user()?->isPenanggungjawabGarasi()
             ? $query->withoutGlobalScopes([SoftDeletingScope::class])
             : $query;
     }
@@ -104,8 +104,8 @@ class LogServisResource extends Resource
                         ->numeric()->minValue(0)->prefix('Rp')->required()
                         ->live(onBlur: true)
                         ->helperText(fn (Get $get): string => (float) $get('biaya') > LogServis::BATAS_APPROVAL
-                            ? '⚠ Biaya di atas ' . Rupiah::format(LogServis::BATAS_APPROVAL) . ' — pengajuan akan berstatus Pending dan menunggu persetujuan Ketua Garasi.'
-                            : 'Biaya di atas ' . Rupiah::format(LogServis::BATAS_APPROVAL) . ' wajib persetujuan Ketua Garasi.'),
+                            ? '⚠ Biaya di atas ' . Rupiah::format(LogServis::BATAS_APPROVAL) . ' — pengajuan akan berstatus Pending dan menunggu persetujuan Kasubag Rumah Tangga.'
+                            : 'Biaya di atas ' . Rupiah::format(LogServis::BATAS_APPROVAL) . ' wajib persetujuan Kasubag Rumah Tangga.'),
                     Textarea::make('deskripsi')->label('Rincian Servis')->rows(3)->columnSpanFull(),
                     FileUpload::make('foto_kwitansi')
                         ->label('Foto Kwitansi')
@@ -130,7 +130,7 @@ class LogServisResource extends Resource
     /** Dipakai oleh Table Action maupun Header Action (halaman View). */
     public static function putuskan(LogServis $record, string $status): void
     {
-        abort_unless(auth()->user()?->isKetuaGarasi(), 403);
+        abort_unless(auth()->user()?->isKasubagRumahtangga(), 403);
 
         $record->update([
             'status_approval' => $status,
@@ -166,21 +166,21 @@ class LogServisResource extends Resource
                     ->options(['Pending' => 'Pending', 'Approved' => 'Approved', 'Rejected' => 'Rejected']),
                 SelectFilter::make('armada_id')->label('Armada')
                     ->relationship('armada', 'plat_nomor')->searchable()->preload(),
-                TrashedFilter::make()->label('Data terhapus')->visible(fn () => auth()->user()?->isAdminGarasi()),
+                TrashedFilter::make()->label('Data terhapus')->visible(fn () => auth()->user()?->isPenanggungjawabGarasi()),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\RestoreAction::make(),
 
-                // Khusus Ketua Garasi
+                // Khusus Kasubag Rumah Tangga
                 Tables\Actions\Action::make('approve')
                     ->label('Approve')
                     ->icon('heroicon-o-check-circle')
                     ->color('success')
                     ->requiresConfirmation()
                     ->modalHeading('Setujui pengajuan servis?')
-                    ->visible(fn (LogServis $record) => auth()->user()?->isKetuaGarasi() && $record->status_approval === 'Pending')
+                    ->visible(fn (LogServis $record) => auth()->user()?->isKasubagRumahtangga() && $record->status_approval === 'Pending')
                     ->action(function (LogServis $record, Tables\Actions\Action $action) {
                         self::putuskan($record, 'Approved');
                         $action->success();
@@ -193,7 +193,7 @@ class LogServisResource extends Resource
                     ->color('danger')
                     ->requiresConfirmation()
                     ->modalHeading('Tolak pengajuan servis?')
-                    ->visible(fn (LogServis $record) => auth()->user()?->isKetuaGarasi() && $record->status_approval === 'Pending')
+                    ->visible(fn (LogServis $record) => auth()->user()?->isKasubagRumahtangga() && $record->status_approval === 'Pending')
                     ->action(function (LogServis $record, Tables\Actions\Action $action) {
                         self::putuskan($record, 'Rejected');
                         $action->success();

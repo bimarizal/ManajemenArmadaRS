@@ -50,9 +50,9 @@ class FilamentAksesTest extends TestCase
         $this->get(LogServisResource::getUrl('index'))->assertForbidden();
     }
 
-    public function test_ketua_dapat_menyetujui_servis_pending(): void
+    public function test_kasubag_dapat_menyetujui_servis_pending(): void
     {
-        $ketua = $this->buatUser(User::ROLE_KETUA_GARASI);
+        $ketua = $this->buatUser(User::ROLE_KASUBAG_RUMAHTANGGA);
         $servis = $this->buatLogServis($this->buatArmada(), ['biaya' => 2500000]);
 
         $this->actingAs($ketua);
@@ -64,9 +64,9 @@ class FilamentAksesTest extends TestCase
         $this->assertSame($ketua->id, $servis->approved_by);
     }
 
-    public function test_ketua_dapat_menolak_servis_pending(): void
+    public function test_kasubag_dapat_menolak_servis_pending(): void
     {
-        $ketua = $this->buatUser(User::ROLE_KETUA_GARASI);
+        $ketua = $this->buatUser(User::ROLE_KASUBAG_RUMAHTANGGA);
         $servis = $this->buatLogServis($this->buatArmada(), ['biaya' => 2500000]);
 
         $this->actingAs($ketua);
@@ -76,32 +76,32 @@ class FilamentAksesTest extends TestCase
         $this->assertSame('Rejected', $servis->fresh()->status_approval);
     }
 
-    public function test_admin_garasi_tidak_melihat_tombol_approve(): void
+    public function test_penanggungjawab_garasi_tidak_melihat_tombol_approve(): void
     {
         $servis = $this->buatLogServis($this->buatArmada(), ['biaya' => 2500000]);
 
-        $this->actingAs($this->buatUser(User::ROLE_ADMIN_GARASI));
+        $this->actingAs($this->buatUser(User::ROLE_PENANGGUNGJAWAB_GARASI));
 
         Livewire::test(ListLogServises::class)->assertTableActionHidden('approve', $servis);
     }
 
-    public function test_admin_garasi_tidak_dapat_membuat_akun_ketua(): void
+    public function test_penanggungjawab_garasi_tidak_dapat_membuat_akun_kasubag(): void
     {
-        $this->actingAs($this->buatUser(User::ROLE_ADMIN_GARASI));
+        $this->actingAs($this->buatUser(User::ROLE_PENANGGUNGJAWAB_GARASI));
 
         Livewire::test(CreateUser::class)
             ->fillForm([
                 'name' => 'Penyusup',
                 'email' => 'penyusup@test.local',
-                'role' => User::ROLE_KETUA_GARASI,
+                'role' => User::ROLE_KASUBAG_RUMAHTANGGA,
                 'password' => 'password123',
                 'passwordConfirmation' => 'password123',
             ])
             ->call('create');
 
-        // Entah ditolak validasi atau dipaksa jadi driver, tidak boleh ada akun ketua baru.
+        // Entah ditolak validasi atau dipaksa jadi driver, tidak boleh ada akun kasubag baru.
         $this->assertFalse(
-            User::where('email', 'penyusup@test.local')->where('role', User::ROLE_KETUA_GARASI)->exists()
+            User::where('email', 'penyusup@test.local')->where('role', User::ROLE_KASUBAG_RUMAHTANGGA)->exists()
         );
     }
 }

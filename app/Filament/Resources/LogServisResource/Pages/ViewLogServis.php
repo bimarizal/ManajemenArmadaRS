@@ -24,7 +24,7 @@ class ViewLogServis extends ViewRecord
                 ->color('success')
                 ->requiresConfirmation()
                 ->modalHeading('Setujui pengajuan servis?')
-                ->visible(fn (LogServis $record) => auth()->user()?->isKetuaGarasi() && $record->status_approval === 'Pending')
+                ->visible(fn (LogServis $record) => auth()->user()?->isKasubagRumahtangga() && $record->status_approval === 'Pending')
                 ->action(function (LogServis $record, Actions\Action $action) {
                     LogServisResource::putuskan($record, 'Approved');
                     $action->success();
@@ -38,7 +38,7 @@ class ViewLogServis extends ViewRecord
                 ->color('danger')
                 ->requiresConfirmation()
                 ->modalHeading('Tolak pengajuan servis?')
-                ->visible(fn (LogServis $record) => auth()->user()?->isKetuaGarasi() && $record->status_approval === 'Pending')
+                ->visible(fn (LogServis $record) => auth()->user()?->isKasubagRumahtangga() && $record->status_approval === 'Pending')
                 ->action(function (LogServis $record, Actions\Action $action) {
                     LogServisResource::putuskan($record, 'Rejected');
                     $action->success();

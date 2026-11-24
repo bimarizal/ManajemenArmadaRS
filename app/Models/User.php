@@ -16,8 +16,8 @@ class User extends Authenticatable implements FilamentUser
     use HasFactory, Notifiable, LogsActivity;
 
     public const ROLE_DRIVER = 'driver';
-    public const ROLE_ADMIN_GARASI = 'admin_garasi';
-    public const ROLE_KETUA_GARASI = 'ketua_garasi';
+    public const ROLE_PENANGGUNGJAWAB_GARASI = 'penanggungjawab_garasi';
+    public const ROLE_KASUBAG_RUMAHTANGGA = 'kasubag_rumahtangga';
 
     protected $fillable = ['name', 'email', 'password', 'role', 'is_active'];
 
@@ -38,8 +38,8 @@ class User extends Authenticatable implements FilamentUser
     {
         return (bool) $this->is_active && in_array($this->role, [
             self::ROLE_DRIVER,
-            self::ROLE_ADMIN_GARASI,
-            self::ROLE_KETUA_GARASI,
+            self::ROLE_PENANGGUNGJAWAB_GARASI,
+            self::ROLE_KASUBAG_RUMAHTANGGA,
         ], true);
     }
 
@@ -48,14 +48,14 @@ class User extends Authenticatable implements FilamentUser
         return $this->role === self::ROLE_DRIVER;
     }
 
-    public function isAdminGarasi(): bool
+    public function isPenanggungjawabGarasi(): bool
     {
-        return $this->role === self::ROLE_ADMIN_GARASI;
+        return $this->role === self::ROLE_PENANGGUNGJAWAB_GARASI;
     }
 
-    public function isKetuaGarasi(): bool
+    public function isKasubagRumahtangga(): bool
     {
-        return $this->role === self::ROLE_KETUA_GARASI;
+        return $this->role === self::ROLE_KASUBAG_RUMAHTANGGA;
     }
 
     public function getActivitylogOptions(): LogOptions

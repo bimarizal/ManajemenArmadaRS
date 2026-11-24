@@ -18,7 +18,7 @@ class FleetStatsOverview extends StatsOverviewWidget
     {
         $user = auth()->user();
 
-        return $user && ($user->isKetuaGarasi() || $user->isAdminGarasi());
+        return $user && ($user->isKasubagRumahtangga() || $user->isPenanggungjawabGarasi());
     }
 
     protected function getColumns(): int

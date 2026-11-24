@@ -25,10 +25,10 @@ class DatabaseSeeder extends Seeder
         // ------------------------------------------------------------ Users
         // Semua password: "password"
         $ketua = User::updateOrCreate(['email' => 'ketua@simfleet.test'], [
-            'name' => 'dr. Hendra Kusuma', 'password' => 'password', 'role' => User::ROLE_KETUA_GARASI,
+            'name' => 'dr. Hendra Kusuma', 'password' => 'password', 'role' => User::ROLE_KASUBAG_RUMAHTANGGA,
         ]);
         $admin = User::updateOrCreate(['email' => 'admin@simfleet.test'], [
-            'name' => 'Siti Rahmawati', 'password' => 'password', 'role' => User::ROLE_ADMIN_GARASI,
+            'name' => 'Siti Rahmawati', 'password' => 'password', 'role' => User::ROLE_PENANGGUNGJAWAB_GARASI,
         ]);
         $driver1 = User::updateOrCreate(['email' => 'driver1@simfleet.test'], [
             'name' => 'Budi Santoso', 'password' => 'password', 'role' => User::ROLE_DRIVER,
@@ -117,7 +117,7 @@ class DatabaseSeeder extends Seeder
             'status_approval' => 'Approved', 'approved_by' => $ketua->id, // <= Rp 1 juta
         ]);
 
-        // > Rp 1 juta: model memaksa Pending (menunggu Ketua Garasi).
+        // > Rp 1 juta: model memaksa Pending (menunggu Kasubag Rumah Tangga).
         LogServis::create([
             'armada_id' => $armadas[1]->id, 'tgl_servis' => today()->subDays(2),
             'jenis_servis' => 'Overhaul Rem & Kampas', 'bengkel' => 'Bengkel Isuzu Surakarta',
